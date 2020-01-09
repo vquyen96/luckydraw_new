@@ -59,25 +59,42 @@ $(document).ready(function(){
     $("input[name='pass']").val(pass.toString());
 
     var ran = 0;
+    var ranGen = 0;
     var refreshIntervalId;
+    var refreshInterval;
 
     $(".mainRandomButtonRun").click(function(){
-        refreshIntervalId = setInterval(function(){
-            do{
-                ran = Math.floor((Math.random() * max) + 1);
-            }
-            while(pass.indexOf(ran) !== -1 || listNum.indexOf(numberToString(ran)) !== -1);
-            displayNumber(ran);
-
-        }, 50);
+        runRandom(maxSize);
         $(this).hide();
         $(this).next().show();
     });
 
+    function runRandom(size) {
+        refreshIntervalId = setInterval(function(){
+            do{
+                ranGen = Math.floor((Math.random() * max) + 1);
+            }
+            while(pass.indexOf(ranGen) !== -1 || listNum.indexOf(numberToString(ranGen)) !== -1);
+            displayNumber(ranGen, size);
+        }, 50);
+    }
+
 
     $(".mainRandomButtonStop").click(function(){
         // alert(ran);
+        ran = ranGen;
+        //
         clearInterval(refreshIntervalId);
+        // runRandom(maxSize-1);
+        var i = 1;
+        clearInterval(refreshIntervalId);
+        runRandom(maxSize-i);
+        i++;
+        refreshInterval = setInterval(function(){
+            clearInterval(refreshIntervalId);
+            runRandom(maxSize-i);
+            i++;
+        }, 2000);
         $(this).hide();
         $(this).prev().show();
         showModal(ran);
@@ -140,9 +157,9 @@ $(document).ready(function(){
         $(".mainRandomBorder").html(str);
     }
 
-    function displayNumber(number) {
+    function displayNumber(number, size) {
         number = numberToString (number);
-        for (let i = 0; i < maxSize; i++) {
+        for (let i = 0; i < size; i++) {
             var str = number.substring(i, i+1);
             $(".mainRandomBorderItem").eq(i).text(str);
         }
