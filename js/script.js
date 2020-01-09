@@ -84,7 +84,6 @@ $(document).ready(function(){
         // alert(ran);
         ran = ranGen;
         //
-        clearInterval(refreshIntervalId);
         // runRandom(maxSize-1);
         var i = 1;
         clearInterval(refreshIntervalId);
@@ -94,11 +93,18 @@ $(document).ready(function(){
             clearInterval(refreshIntervalId);
             runRandom(maxSize-i);
             i++;
-        }, 2000);
-        $(this).hide();
-        $(this).prev().show();
-        showModal(ran);
-        addNumberToList(ran);
+            if(maxSize < i) {
+                $(".mainRandomButtonStop").hide();
+                $(".mainRandomButtonStop").prev().show();
+                showModal(ran);
+                addNumberToList(ran);
+                clearInterval(refreshInterval);
+
+            }
+            console.log(i);
+        }, 500);
+
+
 
     });
 
