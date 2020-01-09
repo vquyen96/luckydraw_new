@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lucky Draw</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="fontawesome/css/all.css">
+	<link href="css/font.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link href="css/select2.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body style="background: url('bg.jpg') no-repeat center /cover;">
+	<div class="mainScroll">
+		<div class="mainRandom">
+			<div class="mainRandomLogo">
+				<img src="logo.png" alt="">
+			</div>
+			<div class="mainRandomTitle">Lucky Draw</div>
+			<div class="mainRandomNumber d-none">
+
+			</div>
+			<div class="mainRandomBorder">
+				<div class="mainRandomBorderItem">0</div>
+				<div class="mainRandomBorderItem">0</div>
+				<div class="mainRandomBorderItem">0</div>
+			</div>
+			<div class="mainRandomClear">
+				<i class="far fa-times-circle"></i>
+				Clear
+			</div>
+			<div class="mainRandomButton">
+				<button class="mainRandomButtonRun">Lựa chọn số may mắn</button>
+				<button class="mainRandomButtonStop">Dừng lại</button>
+			</div>
+			<div class="listNum">
+				<!--		<div class="listNumIcon" title="Danh sách số may mắn">-->
+				<!--			<i class="fas fa-list-ul"></i>-->
+				<!--		</div>-->
+				<div class="listNumMain">
+					<div class="listNumMainOption">
+						<div class="listNumMainShowModal">
+							<input type="checkbox" name="">
+							<label> Thông báo kết quả</label>
+						</div>
+						<div class="listNumMainDeleteAll">
+							<i class="far fa-times-circle"></i>
+							Xóa tất cả
+						</div>
+					</div>
+
+					<ul>
+						<li>
+							<div>Lỗi</div>
+							<div class="listNumMainDeleteItem">
+								<i class="far fa-times-circle"></i>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="setting">
+		<div class="settingMain">
+			<div class="settingMainItem">
+				<div class="settingMainItemTitle">Giá trị cao nhất :</div>
+				<div class="settingMainItemForm">
+					<input type="number" name="max" class=" form-control">
+				</div>
+				
+			</div>
+			<div class="settingMainItem">
+				<div class="settingMainItemTitle">Bỏ qua :</div>
+				<div class="settingMainItemForm">
+					<!-- <select class="selPass form-control" name="pass" multiple="multiple"> -->
+						<input type="text" name="pass" class=" form-control" placeholder="2,3, ....">
+				</select>
+				</div>
+				
+			</div>
+			
+			<div class="settingMainItem">
+				<div class="settingMainItemTitle"></div>
+				<div class="settingMainItemForm">
+					<input type="button" name="btnSbm" class="btnSbm btn btn-primary" value="Lưu lại">
+				</div>
+			</div>
+			
+			
+		</div>
+		<div class="settingIcon" title="Cài đặt">
+			<i class="fas fa-cog"></i>
+		</div>
+	</div>
+
+
+
+
+	<div class="modal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Xin chúc mừng con số may mắn</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <h1 class="text-center"></h1>
+	      </div>
+	      <!-- <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div> -->
+	    </div>
+	  </div>
+	</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/select2.min.js"></script>
+	<script src="js/script.js"></script>
+</body>
+</html>
