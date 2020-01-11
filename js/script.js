@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+    var listCustomer = localStorage.getItem("listCustomer");
+    listCustomer = JSON.parse(listCustomer);
     //btn show setting
     $(document).on("click", ".settingIcon", function(){
         $(".settingMain").slideToggle();
@@ -82,6 +84,8 @@ $(document).ready(function(){
 
     $(".mainRandomButtonStop").click(function(){
         // alert(ran);
+        $(".mainRandomButtonStop").hide();
+        $(".mainRandomButtonWaiting").show();
         ran = ranGen;
         //
         // runRandom(maxSize-1);
@@ -94,18 +98,20 @@ $(document).ready(function(){
             runRandom(maxSize-i);
             i++;
             if(maxSize < i) {
-                $(".mainRandomButtonStop").hide();
-                $(".mainRandomButtonStop").prev().show();
-                showModal(ran);
-                addNumberToList(ran);
                 clearInterval(refreshInterval);
+                $(".mainRandomButtonWaiting").hide();
+                $(".mainRandomButtonRun").show();
+                showModal(ran);
+                var toFind = ran.toString();
+                var filtered = listCustomer.filter(function(el) {
+                  return el.stt === toFind;
+                });
+                console.log(filtered[0], filtered[0].name, filtered[0].stt);
+                addNumberToList(ran);
 
             }
             console.log(i);
         }, 500);
-
-
-
     });
 
     //save config
@@ -116,6 +122,7 @@ $(document).ready(function(){
         generateDisplayBox(maxSize);
         displayNumber(max);
         pass = generatePass($("input[name='pass']").val());
+        uploadFile();
     });
 
     //Delete all list
@@ -206,4 +213,58 @@ $(document).ready(function(){
         }
         $(".listNumMain ul").html(list_li);
     }
+
+
+function uploadFile() {
+    var fileUpload = $("#fileUpload")[0];
+        //Validate whether File is valid Excel file.
+    var regex = /^([a-zA-Z0-9\s_\\.\-:\)\(])+(.xls|.xlsx)$/;
+    if (regex.test(fileUpload.value.toLowerCase())) {
+        if (typeof (FileReader) != "undefined") {
+            var reader = new FileReader();
+
+            //For Browsers other than IE.
+            if (reader.readAsBinaryString) {
+                reader.onload = function (e) {
+                    ProcessExcel(e.target.result);
+                };
+                reader.readAsBinaryString(fileUpload.files[0]);
+            } else {
+                //For IE Browser.
+                reader.onload = function (e) {
+                    var data = "";
+                    var bytes = new Uint8Array(e.target.result);
+                    for (var i = 0; i < bytes.byteLength; i++) {
+                        data += String.fromCharCode(bytes[i]);
+                    }
+                    console.log(data);
+                    ProcessExcel(data);
+                };
+                reader.readAsArrayBuffer(fileUpload.files[0]);
+            }
+        } else {
+            alert("This browser does not support HTML5.");
+        }
+    } else {
+        alert("Please upload a valid Excel file.");
+    }
+}
+    
+    function ProcessExcel(data) {
+        //Read the Excel File data.
+        var workbook = XLSX.read(data, {
+            type: 'binary'
+        });
+ 
+        //Fetch the name of First Sheet.
+        var firstSheet = workbook.SheetNames[0];
+ 
+        //Read all rows from First Sheet into an JSON array.
+        listCustomer = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
+
+        console.log(listCustomer);
+        localStorage.setItem("listCustomer", JSON.stringify(listCustomer));
+
+        
+    };
 });

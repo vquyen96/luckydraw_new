@@ -89,6 +89,10 @@ body{
     background: #ab3973;
     display: none;
 }
+.mainRandomButtonWaiting{
+    background: #ab3973;
+    display: none;
+}
 .mainRandomButton {
     text-align: center;
 }

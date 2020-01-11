@@ -33,6 +33,7 @@
 			<div class="mainRandomButton">
 				<button class="mainRandomButtonRun">Lựa chọn số may mắn</button>
 				<button class="mainRandomButtonStop">Dừng lại</button>
+				<button class="mainRandomButtonWaiting">Đợi một chút</button>
 			</div>
 			<div class="listNum">
 				<!--		<div class="listNumIcon" title="Danh sách số may mắn">-->
@@ -81,6 +82,17 @@
 				</div>
 				
 			</div>
+			<div class="settingMainItem">
+				<div class="settingMainItemTitle">Upload danh sách</div>
+				<div class="settingMainItemForm">
+					<!-- <select class="selPass form-control" name="pass" multiple="multiple"> -->
+						<input type="file" id="fileUpload" class="form-control"/>
+				</select>
+				</div>
+				
+			</div>
+<!-- 			<input type="file" id="fileUpload" />
+			<input type="button" id="upload" value="Upload" /> -->
 			
 			<div class="settingMainItem">
 				<div class="settingMainItemTitle"></div>
@@ -122,6 +134,8 @@
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/select2.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
 	<script src="js/script.js"></script>
 </body>
 </html>
