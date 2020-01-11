@@ -62,8 +62,8 @@ $(document).ready(function(){
 
     var ran = 0;
     var ranGen = 0;
-    var refreshIntervalId;
-    var refreshInterval;
+    var runRandomInterval;
+    var stepToStopInterval;
 
     $(".mainRandomButtonRun").click(function(){
         runRandom(maxSize);
@@ -72,7 +72,7 @@ $(document).ready(function(){
     });
 
     function runRandom(size) {
-        refreshIntervalId = setInterval(function(){
+        runRandomInterval = setInterval(function(){
             do{
                 ranGen = Math.floor((Math.random() * max) + 1);
             }
@@ -90,28 +90,26 @@ $(document).ready(function(){
         //
         // runRandom(maxSize-1);
         var i = 1;
-        clearInterval(refreshIntervalId);
+        clearInterval(runRandomInterval);
+        displayNumber(ran, maxSize);
         runRandom(maxSize-i);
         i++;
-        refreshInterval = setInterval(function(){
-            clearInterval(refreshIntervalId);
+        stepToStopInterval = setInterval(function(){
+            clearInterval(runRandomInterval);
+            displayNumber(ran, maxSize);
             runRandom(maxSize-i);
             i++;
             if(maxSize < i) {
-                clearInterval(refreshInterval);
+                clearInterval(stepToStopInterval);
                 $(".mainRandomButtonWaiting").hide();
                 $(".mainRandomButtonRun").show();
-                showModal(ran);
-                var toFind = ran.toString();
-                var filtered = listCustomer.filter(function(el) {
-                  return el.stt === toFind;
-                });
-                console.log(filtered[0], filtered[0].name, filtered[0].stt);
-                addNumberToList(ran);
 
+                var nameCustomer = findNameById(ran);
+                showModal(ran, nameCustomer);
+                addNumberToList(ran);
             }
             console.log(i);
-        }, 500);
+        }, 800);
     });
 
     //save config
@@ -188,10 +186,11 @@ $(document).ready(function(){
         return numPlus + number;
     }
 
-    function showModal(number) {
+    function showModal(number, name) {
         var isDisplay = localStorage.getItem("displayModal");
         if (isDisplay == null || isDisplay == "true") {
             $(".modal-body h1").text(numberToString(number));
+            $(".modal-body h2").text(name);
             $(".modal").modal();
         }
     }
@@ -209,46 +208,60 @@ $(document).ready(function(){
         listNumLength = listNum.length;
         console.log(listNumLength);
         for (var i = listNumLength; i > 0 ; i--) {
-            list_li += "<li><div>"+listNum[i-1]+"</div><div class='listNumMainDeleteItem'><i class='far fa-times-circle'></i></div></li>"
+            list_li += "<li>" +
+                    "<div>"+listNum[i-1]+"</div>" +
+                    "<div>"+findNameById(listNum[i-1])+"</div>" +
+                    "<div class='listNumMainDeleteItem'>" +
+                        "<i class='far fa-times-circle'></i>" +
+                    "</div>" +
+                "</li>";
         }
         $(".listNumMain ul").html(list_li);
     }
 
+    function findNameById(id) {
+        var stt = parseInt(id).toString();
+        var filtered = listCustomer.filter(function(el) {
+            return el.stt === stt;
+        });
+        console.log(filtered[0], filtered[0].name, filtered[0].stt);
+        return filtered[0].name;
+    }
 
-function uploadFile() {
-    var fileUpload = $("#fileUpload")[0];
-        //Validate whether File is valid Excel file.
-    var regex = /^([a-zA-Z0-9\s_\\.\-:\)\(])+(.xls|.xlsx)$/;
-    if (regex.test(fileUpload.value.toLowerCase())) {
-        if (typeof (FileReader) != "undefined") {
-            var reader = new FileReader();
+    function uploadFile() {
+        var fileUpload = $("#fileUpload")[0];
+            //Validate whether File is valid Excel file.
+        var regex = /^([a-zA-Z0-9\s_\\.\-:\)\(])+(.xls|.xlsx)$/;
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
 
-            //For Browsers other than IE.
-            if (reader.readAsBinaryString) {
-                reader.onload = function (e) {
-                    ProcessExcel(e.target.result);
-                };
-                reader.readAsBinaryString(fileUpload.files[0]);
+                //For Browsers other than IE.
+                if (reader.readAsBinaryString) {
+                    reader.onload = function (e) {
+                        ProcessExcel(e.target.result);
+                    };
+                    reader.readAsBinaryString(fileUpload.files[0]);
+                } else {
+                    //For IE Browser.
+                    reader.onload = function (e) {
+                        var data = "";
+                        var bytes = new Uint8Array(e.target.result);
+                        for (var i = 0; i < bytes.byteLength; i++) {
+                            data += String.fromCharCode(bytes[i]);
+                        }
+                        console.log(data);
+                        ProcessExcel(data);
+                    };
+                    reader.readAsArrayBuffer(fileUpload.files[0]);
+                }
             } else {
-                //For IE Browser.
-                reader.onload = function (e) {
-                    var data = "";
-                    var bytes = new Uint8Array(e.target.result);
-                    for (var i = 0; i < bytes.byteLength; i++) {
-                        data += String.fromCharCode(bytes[i]);
-                    }
-                    console.log(data);
-                    ProcessExcel(data);
-                };
-                reader.readAsArrayBuffer(fileUpload.files[0]);
+                alert("This browser does not support HTML5.");
             }
         } else {
-            alert("This browser does not support HTML5.");
+            alert("Please upload a valid Excel file.");
         }
-    } else {
-        alert("Please upload a valid Excel file.");
     }
-}
     
     function ProcessExcel(data) {
         //Read the Excel File data.
