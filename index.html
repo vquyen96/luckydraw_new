@@ -14,10 +14,10 @@
 <body style="background: url('bg.jpg') no-repeat center /cover;">
 	<div class="mainScroll">
 		<div class="mainRandom">
-			<div class="mainRandomLogo">
-				<img src="logo.png" alt="">
-			</div>
-			<div class="mainRandomTitle">Lucky Draw</div>
+<!--			<div class="mainRandomLogo">-->
+<!--				<img src="logo.png" alt="">-->
+<!--			</div>-->
+<!--			<div class="mainRandomTitle">Lucky Draw</div>-->
 			<div class="mainRandomNumber d-none">
 
 			</div>
@@ -77,11 +77,18 @@
 				<div class="settingMainItemTitle">Bỏ qua :</div>
 				<div class="settingMainItemForm">
 					<!-- <select class="selPass form-control" name="pass" multiple="multiple"> -->
-						<input type="text" name="pass" class=" form-control" placeholder="2,3, ....">
+						<input type="text" name="pass" class=" form-control" placeholder="VD: 2,3, ....">
 				</select>
 				</div>
-				
 			</div>
+            <div class="settingMainItem">
+                <div class="settingMainItemTitle">Số lượng ô :</div>
+                <div class="settingMainItemForm">
+                    <!-- <select class="selPass form-control" name="pass" multiple="multiple"> -->
+                    <input type="number" name="maxSize" class=" form-control" placeholder="VD: 3">
+                    </select>
+                </div>
+            </div>
 			<div class="settingMainItem">
 				<div class="settingMainItemTitle">Upload danh sách</div>
 				<div class="settingMainItemForm">
@@ -135,8 +142,8 @@
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/select2.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+	<script type="text/javascript" src="js/xlsx.full.min.js"></script>
+	<script type="text/javascript" src="js/jszip.js"></script>
 	<script src="js/script.js"></script>
 </body>
 </html>

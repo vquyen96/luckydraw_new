@@ -32,15 +32,21 @@ $(document).ready(function(){
 
     //get max limit
     var max = localStorage.getItem("max");
+    var maxSize = localStorage.getItem("maxSize");
     if (max == null) {
-        max = 320;
+        max = 99;
         localStorage.setItem("max", max);
         location.reload();
     }
-    var maxSize = max.length;
+    if (maxSize == null) {
+        maxSize = max.length;
+    }
+
+
     generateDisplayBox(maxSize);
     displayNumber(max);
     $("input[name='max']").val(max);
+    $("input[name='maxSize']").val(maxSize);
 
 
     //get list number
@@ -114,13 +120,36 @@ $(document).ready(function(){
 
     //save config
     $(document).on("click", ".btnSbm", function(){
-        max = $("input[name='max']").val();
-        localStorage.setItem("max", max);
-        maxSize = max.toString().length;
-        generateDisplayBox(maxSize);
-        displayNumber(max);
-        pass = generatePass($("input[name='pass']").val());
-        uploadFile();
+        var fileUpload = $("#fileUpload")[0];
+
+        if (fileUpload.value != null && fileUpload.value !== "" && fileUpload.files.length !== 0) {
+            uploadFile(fileUpload);
+        }
+        setTimeout(function () {
+            var maxInput = $("input[name='max']").val();
+            if (maxInput == null || maxInput === "") {
+                if (listCustomer != null && listCustomer.length !== 0) {
+                    max = listCustomer[listCustomer.length - 1].stt;
+                    $("input[name='max']").val(max);
+                }
+            } else {
+                max = maxInput;
+            }
+            localStorage.setItem("max", max);
+            var maxSizeInput = $("input[name='maxSize']").val();
+            console.log(maxSizeInput);
+            if (maxSizeInput == null || maxSizeInput === "") {
+                maxSize = max.toString().length;
+                $("input[name='maxSize']").val(maxSize);
+            } else {
+                maxSize = maxSizeInput;
+            }
+            localStorage.setItem("maxSize", maxSize);
+
+            generateDisplayBox(maxSize);
+            displayNumber(max);
+            pass = generatePass($("input[name='pass']").val());
+        }, 100);
     });
 
     //Delete all list
@@ -221,15 +250,21 @@ $(document).ready(function(){
 
     function findNameById(id) {
         var stt = parseInt(id).toString();
-        var filtered = listCustomer.filter(function(el) {
-            return el.stt === stt;
-        });
-        console.log(filtered[0], filtered[0].name, filtered[0].stt);
-        return filtered[0].name;
+        if(listCustomer != null) {
+            var filtered = listCustomer.filter(function(el) {
+                return el.stt === stt;
+            });
+            console.log(filtered);
+            if(filtered.length !== 0) {
+                return filtered[0].name;
+            }
+        }
+
+        return "Không có";
     }
 
-    function uploadFile() {
-        var fileUpload = $("#fileUpload")[0];
+    function uploadFile(fileUpload) {
+
             //Validate whether File is valid Excel file.
         var regex = /^([a-zA-Z0-9\s_\\.\-:\)\(])+(.xls|.xlsx)$/;
         if (regex.test(fileUpload.value.toLowerCase())) {
